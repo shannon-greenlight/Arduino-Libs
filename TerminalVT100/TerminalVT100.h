@@ -23,6 +23,9 @@ class TerminalVT100
 	void clrBelow(String);
 	void print(String);
 	void println(String);
+	void blinkOn(void);
+	void blinkOff(void);
+	void clrToEOL(void);
 	
   // library-accessible "private" interface
   private:

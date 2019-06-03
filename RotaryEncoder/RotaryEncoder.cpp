@@ -59,6 +59,7 @@ void RotaryEncoder::setEncoderValue(int val)
 
 
 void RotaryEncoder::updateEncoder() {
+  t.print("");
   int MSB = digitalRead(encoderPin1); //MSB = most significant bit - B terminal
   int LSB = digitalRead(encoderPin2); //LSB = least significant bit - A terminal
   //int state;
@@ -68,7 +69,7 @@ void RotaryEncoder::updateEncoder() {
     case REST:
       switch(encoded) {
         case 0:
-          state = UNK;  // we missed first event
+          state = REST;  // we missed first event
           break;
         case 1:
           state = CCW;

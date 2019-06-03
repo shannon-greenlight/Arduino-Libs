@@ -1,16 +1,13 @@
 /*
-  TerminalVT100.h - TerminalVT100 library for Wiring - implementation
-  Copyright (c) 2006 John Doe.  All right reserved.
+  TerminalVT100.h - TerminalVT100 library
+  Copyright (c) 2019 Shannon Vance.  All right reserved.
 */
 
-// include core Wiring API
+// include core API
 #include <Arduino.h>
 
 // include this library's description file
 #include "TerminalVT100.h"
-
-// include description files for other libraries used (if any)
-//#include "HardwareSerial.h"
 
 // Constructor /////////////////////////////////////////////////////////////////
 // Function that handles the creation and setup of instances
@@ -29,34 +26,6 @@ TerminalVT100::TerminalVT100()
 
 // Public Methods //////////////////////////////////////////////////////////////
 // Functions available in Wiring sketches, this library, and other libraries
-void TerminalVT100::setCursor(String row, String col)
-{
-  Serial.print("\e["+row+";"+col+"H");
-  Serial.print("\e[2K");
-}
-
-void TerminalVT100::setRow(String row)
-{
-  Serial.print("\e["+row+";1H");
-  Serial.print("\e[2K");
-}
-
-void TerminalVT100::clrScreen()
-{
-  Serial.print("\e[2J"); // clear screen
-}
-
-void TerminalVT100::clrBelowCursor()
-{
-  Serial.print("\e[J"); // clear screen
-}
-
-void TerminalVT100::clrBelow(String row)
-{
-  setRow(row);
-  Serial.print("\e[J"); // clear screen
-}
-
 void TerminalVT100::print(String s)
 {
   Serial.print(s);
@@ -65,6 +34,48 @@ void TerminalVT100::print(String s)
 void TerminalVT100::println(String s)
 {
   Serial.println(s);
+}
+
+void TerminalVT100::clrToEOL()
+{
+  print("\e[0K");
+}
+
+
+void TerminalVT100::setCursor(String row, String col)
+{
+  print("\e["+row+";"+col+"H");
+  //print("\e[2K");
+}
+
+void TerminalVT100::setRow(String row)
+{
+  print("\e["+row+";1H");
+  //print("\e[2K");
+}
+
+void TerminalVT100::clrScreen()
+{
+  print("\e[2J"); // clear screen
+}
+
+void TerminalVT100::clrBelowCursor()
+{
+  print("\e[J"); // clear screen
+}
+
+void TerminalVT100::clrBelow(String row)
+{
+  setRow(row);
+  print("\e[J"); // clear screen
+}
+
+void TerminalVT100::blinkOn() {
+  print("\e[5m");
+}
+
+void TerminalVT100::blinkOff() {
+  print("\e[0m");
 }
 
 // Private Methods /////////////////////////////////////////////////////////////
