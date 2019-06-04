@@ -32,6 +32,8 @@ class RotaryEncoder
 	int getEncoderValue(void);
 	void setEncoderValue(int);
 	void updateEncoder(void);
+	void aChanInt(void);
+	void bChanInt(void);
 	TerminalVT100 t;
 	bool debug = false;
 	
@@ -40,6 +42,7 @@ class RotaryEncoder
 	int numFxns;	
 	int state;
 	int encoderValue;
+	String channel; // A or B
 };
 
 #endif

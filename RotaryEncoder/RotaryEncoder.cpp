@@ -57,6 +57,16 @@ void RotaryEncoder::setEncoderValue(int val)
   encoderValue=val;
 }
 
+void RotaryEncoder::aChanInt() {
+	channel = "A";
+	updateEncoder();
+}
+
+void RotaryEncoder::bChanInt() {
+	channel = "B";
+	updateEncoder();
+}
+
 
 void RotaryEncoder::updateEncoder() {
   t.print("");
@@ -67,9 +77,13 @@ void RotaryEncoder::updateEncoder() {
   //debugInt("Encoded: ",encoded);
   switch(state) {
     case REST:
+	  if(debug)  {
+        t.setRow("10");
+        t.clrBelowCursor();
+	  }
       switch(encoded) {
         case 0:
-          state = REST;  // we missed first event
+          state = (channel == "A") ? CW : CCW;  // we missed first event
           break;
         case 1:
           state = CCW;
@@ -125,7 +139,7 @@ void RotaryEncoder::updateEncoder() {
   if(debug) {
 	t.setRow(String(15+encoded));
 	t.clrBelowCursor();
-	t.println("Encoded: "+String(encoded) + " State: "+ String(state));
+	t.println("Encoded: "+String(encoded) + " State: "+ String(state)+ " Channel: "+channel);
   }
 }
 

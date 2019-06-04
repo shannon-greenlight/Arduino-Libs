@@ -37,7 +37,7 @@ LED_Driver_5916::LED_Driver_5916()
 // Functions available in Wiring sketches, this library, and other libraries
 
 void LED_Driver_5916::set_LED(int led) {
-	word w = 1 << led;
+	word w = 32768 >> led;
 	LED_write(w);
 }
 
