@@ -1,6 +1,7 @@
 /*
   RotaryEncoder - RotaryEncoder library 
   Copyright (c) 2019 Shannon Vance.  All right reserved.
+  Released under Creative Commons Attribution-ShareAlike 2.5 Generic License
 */
 
 // ensure this library description is only included once

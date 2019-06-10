@@ -25,7 +25,6 @@ class LED_Driver_5916
 
   // library-accessible "private" interface
   private:
-    void doSomethingSecret(void);
 	void setPin(int,bool);
 	void setOE(bool);
 	void setLE(bool);
