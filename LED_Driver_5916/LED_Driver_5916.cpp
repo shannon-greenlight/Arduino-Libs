@@ -30,7 +30,7 @@ LED_Driver_5916::LED_Driver_5916()
   pinMode(clkPin, OUTPUT);
   setOE(false);
   setLE(false);
-  Serial.begin(9600);
+  //Serial.begin(9600);
 }
 
 // Public Methods //////////////////////////////////////////////////////////////

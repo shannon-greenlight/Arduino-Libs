@@ -16,11 +16,11 @@
 // Constructor /////////////////////////////////////////////////////////////////
 // Function that handles the creation and setup of instances
 
-RotaryEncoder::RotaryEncoder(int nfxns)
+RotaryEncoder::RotaryEncoder()
 {
   // initialize this instance's variables
   //t = TerminalVT100();
-  numFxns = nfxns;
+  //numFxns = nfxns;
   state = REST;
   setEncoderValue(0);
   

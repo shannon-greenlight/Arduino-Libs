@@ -24,9 +24,9 @@ Selector::Selector(int n)
   num_fxns = n;
   value = 0;
 
-  d = LED_Driver_5916();
-  e = RotaryEncoder(num_fxns);
-
+   d = LED_Driver_5916();
+   e = RotaryEncoder();
+   e.numFxns = num_fxns;
 }
 
 // Public Methods //////////////////////////////////////////////////////////////
@@ -46,11 +46,11 @@ int Selector::get(void)
 	return value;
 }
 
-void inc() {
+void Selector::inc() {
 	e.incEncoder();
 }
 
-void dec() {
+void Selector::dec() {
 	e.decEncoder();
 }
 

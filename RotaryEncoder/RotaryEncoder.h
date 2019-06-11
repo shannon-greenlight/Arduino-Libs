@@ -27,7 +27,8 @@ class RotaryEncoder
 {
   // user-accessible "public" interface
   public:
-    RotaryEncoder(int);
+    RotaryEncoder();
+	int numFxns;	
     void incEncoder(void);
     void decEncoder(void);
 	int getEncoderValue(void);
@@ -40,7 +41,6 @@ class RotaryEncoder
 	
   // library-accessible "private" interface
   private:
-	int numFxns;	
 	int state;
 	int encoderValue;
 	String channel; // A or B
