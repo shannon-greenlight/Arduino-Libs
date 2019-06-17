@@ -20,8 +20,8 @@ LED_Driver_5916::LED_Driver_5916()
   // initialize this instance's variables
   oePin = 5;
   lePin = 8;
-  dataPin = 9;
-  clkPin = 7;
+  dataPin = 7;
+  clkPin = 6;
   
   // do whatever is required to initialize the library
   pinMode(oePin, OUTPUT);

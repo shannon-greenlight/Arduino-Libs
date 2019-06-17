@@ -20,7 +20,7 @@ class TerminalVT100
 	void setRow(String);
 	void clrScreen(void);
 	void clrBelowCursor(void);
-	void clrBelow(String);
+	void clrDown(String);
 	void print(String);
 	void println(String);
 	void blinkOn(void);

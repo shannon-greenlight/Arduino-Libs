@@ -1,6 +1,6 @@
 /*
   RotaryEncoder.h - RotaryEncoder library for Wiring - implementation
-  Copyright (c) 2006 John Doe.  All right reserved.
+  Copyright (c) 2019 Shannon Vance.  All right reserved.
 */
 
 // include core Wiring API
@@ -10,8 +10,6 @@
 #include "RotaryEncoder.h"
 
 // include description files for other libraries used (if any)
-//#include "HardwareSerial.h"
-//#include <TerminalVT100.h>
 
 // Constructor /////////////////////////////////////////////////////////////////
 // Function that handles the creation and setup of instances
@@ -19,18 +17,14 @@
 RotaryEncoder::RotaryEncoder()
 {
   // initialize this instance's variables
-  //t = TerminalVT100();
-  //numFxns = nfxns;
   state = REST;
   setEncoderValue(0);
   
-  pinMode(encoderPin1, INPUT);	// MSB - B terminal
-  pinMode(encoderPin2, INPUT);	// LSB - A terminal
-  digitalWrite(encoderPin1, HIGH); //turn pullup resistor on
-  digitalWrite(encoderPin2, HIGH); //turn pullup resistor on
+  pinMode(MSB_A, INPUT);	// MSB - A terminal
+  pinMode(LSB_B, INPUT);	// LSB - B terminal
+  digitalWrite(MSB_A, HIGH); //turn pullup resistor on
+  digitalWrite(LSB_B, HIGH); //turn pullup resistor on
 
-  //Serial.begin(9600);
-  //Serial.println("Rotary Encoder: "+nfxns);
 }
 
 // Public Methods //////////////////////////////////////////////////////////////
@@ -70,8 +64,8 @@ void RotaryEncoder::bChanInt() {
 
 void RotaryEncoder::updateEncoder() {
   t.print("");
-  int MSB = digitalRead(encoderPin1); //MSB = most significant bit - B terminal
-  int LSB = digitalRead(encoderPin2); //LSB = least significant bit - A terminal
+  int MSB = digitalRead(MSB_A); //MSB = most significant bit - A terminal
+  int LSB = digitalRead(LSB_B); //LSB = least significant bit - B terminal
   //int state;
   int encoded = (MSB << 1) |LSB; //converting the 2 pin value to single number
   //debugInt("Encoded: ",encoded);

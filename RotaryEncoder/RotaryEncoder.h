@@ -15,8 +15,8 @@
 #define UNK 3
 
 // pins
-#define encoderPin1 2
-#define encoderPin2 3
+#define MSB_A 3
+#define LSB_B 2
 
 // include types & constants of Wiring core API
 #include "Arduino.h"

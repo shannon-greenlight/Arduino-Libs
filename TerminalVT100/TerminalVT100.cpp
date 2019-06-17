@@ -64,7 +64,7 @@ void TerminalVT100::clrBelowCursor()
   print("\e[J"); // clear screen
 }
 
-void TerminalVT100::clrBelow(String row)
+void TerminalVT100::clrDown(String row)
 {
   setRow(row);
   print("\e[J"); // clear screen
