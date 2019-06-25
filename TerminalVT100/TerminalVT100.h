@@ -23,6 +23,8 @@ class TerminalVT100
 	void clrDown(String);
 	void print(String);
 	void println(String);
+	void printChars(int, String);
+	void printTitle(int, String);
 	void blinkOn(void);
 	void blinkOff(void);
 	void clrToEOL(void);

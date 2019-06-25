@@ -78,6 +78,22 @@ void TerminalVT100::blinkOff() {
   print("\e[0m");
 }
 
+void TerminalVT100::printChars(int nchars, String s) {
+	for (int i = 0; i < nchars; i++) {
+		print(s);
+	}
+}
+
+void TerminalVT100::printTitle(int width, String title) {
+	int spaces = (((width-2) - title.length()) / 2);
+	//println("");
+	print("*");
+	printChars(spaces, " ");
+	print(title);
+	printChars(spaces, " ");
+	println("*");
+}
+
 // Private Methods /////////////////////////////////////////////////////////////
 // Functions only available to other functions in this library
 
