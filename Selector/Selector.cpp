@@ -27,10 +27,15 @@ Selector::Selector(int n)
    d = LED_Driver_5916();
    e = RotaryEncoder();
    e.numFxns = num_fxns;
+   //e.t = t;
 }
 
 // Public Methods //////////////////////////////////////////////////////////////
 // Functions available in Wiring sketches, this library, and other libraries
+
+void Selector::set_terminal(TerminalVT100 t) {
+	e.t = t;
+}
 
 void Selector::set(int val)
 {

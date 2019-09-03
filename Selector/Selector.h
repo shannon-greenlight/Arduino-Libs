@@ -9,6 +9,7 @@
 
 // include types & constants of Wiring core API
 #include "Arduino.h"
+#include <TerminalVT100.h>
 
 #include <RotaryEncoder.h>
 #include <LED_Driver_5916.h>
@@ -24,12 +25,14 @@ class Selector
 	void inc(void);
 	void dec(void);
 	int num_fxns;
+	void set_terminal(TerminalVT100);
 	RotaryEncoder e;
 
   // library-accessible "private" interface
   private:
     int value;
 	LED_Driver_5916 d;
+	// TerminalVT100 t;
 };
 
 #endif

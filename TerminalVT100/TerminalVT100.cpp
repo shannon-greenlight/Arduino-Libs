@@ -17,6 +17,10 @@ TerminalVT100::TerminalVT100()
   // initialize this instance's variables
 
   Serial.begin(9600);
+  do {
+	  ;
+  } while(!Serial);
+
   // Use Putty to communicate (VT100 terminal)
   Serial.print("\eSP F");  // tell to use 7-bit control codes
   Serial.print("\e[?25l"); // hide cursor
