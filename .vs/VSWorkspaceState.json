@@ -1,6 +1,7 @@
 {
   "ExpandedNodes": [
     "",
+    "\\Adafruit_LED_Backpack",
     "\\RotaryEncoder"
   ],
   "SelectedNode": "\\RotaryEncoder\\RotaryEncoder.cpp",

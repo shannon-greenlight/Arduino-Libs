@@ -64,6 +64,6 @@ _autosave*
 Debug*
 Release*
 __vm*
-.vs*
+.vs/*
 *.vcxproj*
-Test
+Test/*

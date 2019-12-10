@@ -23,6 +23,7 @@ Test::Test(int givenValue)
   // do whatever is required to initialize the library
   pinMode(13, OUTPUT);
   Serial.begin(9600);
+  interrupted = false;
 }
 
 // Public Methods //////////////////////////////////////////////////////////////
@@ -36,7 +37,9 @@ void Test::doSomething(void)
   Serial.println(value);
 
   // it can also call private functions of this library
-  doSomethingSecret();
+  do {
+    doSomethingSecret();
+  } while (!interrupted);
 }
 
 // Private Methods /////////////////////////////////////////////////////////////
@@ -44,6 +47,9 @@ void Test::doSomething(void)
 
 void Test::doSomethingSecret(void)
 {
+  if(interrupted) {
+	  Serial.println("interrupted ");
+  }
   digitalWrite(13, HIGH);
   delay(200);
   digitalWrite(13, LOW);

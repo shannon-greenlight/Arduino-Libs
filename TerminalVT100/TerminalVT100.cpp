@@ -14,12 +14,18 @@
 
 TerminalVT100::TerminalVT100()
 {
+}
+
+// Public Methods //////////////////////////////////////////////////////////////
+// Functions available in Wiring sketches, this library, and other libraries
+void TerminalVT100::begin()
+{
   // initialize this instance's variables
 
   Serial.begin(9600);
-  do {
-	  ;
-  } while(!Serial);
+  // do {
+	//   ;
+  // } while(!Serial);
 
   // Use Putty to communicate (VT100 terminal)
   Serial.print("\eSP F");  // tell to use 7-bit control codes
@@ -28,8 +34,6 @@ TerminalVT100::TerminalVT100()
   clrScreen();
 }
 
-// Public Methods //////////////////////////////////////////////////////////////
-// Functions available in Wiring sketches, this library, and other libraries
 void TerminalVT100::print(String s)
 {
   Serial.print(s);

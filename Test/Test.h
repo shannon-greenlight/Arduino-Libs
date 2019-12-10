@@ -15,6 +15,7 @@ class Test
 {
   // user-accessible "public" interface
   public:
+	  boolean interrupted;
     Test(int);
     void doSomething(void);
 

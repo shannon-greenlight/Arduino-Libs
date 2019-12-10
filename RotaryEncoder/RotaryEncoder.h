@@ -22,13 +22,14 @@
 #include "Arduino.h"
 #include <TerminalVT100.h>
 
+
 // library interface description
 class RotaryEncoder
 {
   // user-accessible "public" interface
   public:
     RotaryEncoder();
-	int numFxns;	
+	int numFxns;
     void incEncoder(void);
     void decEncoder(void);
 	int getEncoderValue(void);

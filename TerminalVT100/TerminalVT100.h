@@ -16,6 +16,7 @@ class TerminalVT100
   // user-accessible "public" interface
   public:
     TerminalVT100(void);
+	void begin(void);
 	void setCursor(String, String);
 	void setRow(String);
 	void clrScreen(void);

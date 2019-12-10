@@ -32,13 +32,13 @@ RotaryEncoder::RotaryEncoder()
 void RotaryEncoder::incEncoder()
 {
   encoderValue++;
-  encoderValue %= numFxns;
+  if(numFxns>0) encoderValue %= numFxns;
 }
 
 void RotaryEncoder::decEncoder()
 {
   encoderValue--;
-  if(encoderValue<0) encoderValue=numFxns-1;
+  if(numFxns>0 && encoderValue<0) encoderValue=numFxns-1;
 }
 
 int RotaryEncoder::getEncoderValue()
@@ -131,9 +131,9 @@ void RotaryEncoder::updateEncoder() {
       break;
   }
   if(debug) {
-	t.setRow(String(15+encoded));
-	t.clrBelowCursor();
-	t.println("Encoded: "+String(encoded) + " State: "+ String(state)+ " Channel: "+channel);
+    t.setRow(String(15+encoded));
+    t.clrBelowCursor();
+    t.println("Encoded: "+String(encoded) + " State: "+ String(state)+ " Channel: "+channel);
   }
 }
 

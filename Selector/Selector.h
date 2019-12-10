@@ -22,11 +22,11 @@ class Selector
     Selector(int);
     void set(int);
     int get(void);
-	void inc(void);
-	void dec(void);
-	int num_fxns;
-	void set_terminal(TerminalVT100);
-	RotaryEncoder e;
+    void inc(void);
+    void dec(void);
+    int num_fxns;
+    void set_terminal(TerminalVT100);
+    RotaryEncoder e;
 
   // library-accessible "private" interface
   private:
@@ -34,6 +34,22 @@ class Selector
 	LED_Driver_5916 d;
 	// TerminalVT100 t;
 };
+
+// Selector s = Selector(num_fxns);
+
+// void int_xnA(void) {
+// 	s.e.aChanInt();
+// }
+
+// void int_xnB(void) {
+// 	s.e.bChanInt();
+// }
+
+// 	attachInterrupt(0, intFxnB, RISING);
+// 	attachInterrupt(1, intFxnA, RISING);
+// 	Timer1.initialize(50000);
+// 	Timer1.attachInterrupt(watch_trig);	// heartbeat every 50ms
+
 
 #endif
 
