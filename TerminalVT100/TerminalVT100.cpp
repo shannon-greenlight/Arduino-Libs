@@ -102,6 +102,13 @@ void TerminalVT100::printTitle(int width, String title) {
 	println("*");
 }
 
+void TerminalVT100::printVal(String row, String label, String val) {
+	setRow(row);
+	print(label);
+	clrToEOL();
+	println(val);
+}
+
 // Private Methods /////////////////////////////////////////////////////////////
 // Functions only available to other functions in this library
 

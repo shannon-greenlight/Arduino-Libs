@@ -8,23 +8,22 @@
 #include <Greenface_EEPROM.h>
 
 // library interface description
+// Note: this is for a 16 bit int
 class EEPROM_Int: public Greenface_EEPROM
 {
     // user-accessible "public" interface
 public:
-    EEPROM_Int(int * _ptr, int _size, int _offset);
-    //static Greenface_EEPROM gfram;
-    int * ptr;
-    int indx,size,offset;
-    uint16_t length() { return size; }
-    void read(); // xfer from eeprom to array
-    int get(int index=-1);
-    void put(int val, int index=-1);
-    //boolean update(int framAddr, uint8_t val);
-    //void write(int framAddr, uint8_t val);
-    //void dump(int start, int len);
+    EEPROM_Int(int16_t _min, int16_t _max);
+    int16_t max,min;
+    void xfer(); // xfer from eeprom to int
+    int get();
+    void put(int16_t _val);
+    void inc(int16_t by_val=1);
+    //boolean update(int val);
 
     // library-accessible "private" interface
 private:
+    int16_t val;
+    void fit_range(void);
 };
 #endif

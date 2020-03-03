@@ -5,28 +5,44 @@
 #include <Greenface_EEPROM.h>
 #include <EEPROM_Int.h>
 
-EEPROM_Int::EEPROM_Int(int * _ptr, int _size, int _offset) {
-    ptr = _ptr;
-    size = _size;
-    offset = _offset;
-    indx = 0;
+EEPROM_Int::EEPROM_Int(int16_t _min, int16_t _max) {
+    size = 2; // sizeof int16_t
+    offset = eeprom_offset;
+    eeprom_offset += size;
+    min = _min;
+    max = _max;
 }
 
-void EEPROM_Int::read() {
-    for(uint16_t i=0; i<size;i++) {
-        ptr[i] = read_int(offset+(i*2));
-    }
+void EEPROM_Int::xfer() {
+    Serial.println("Xfer Int: "+String(offset));
+    val = read_int(offset);
+    fit_range();
 }
 
-int EEPROM_Int::get(int index) {
-    if(index==-1) index = indx;
-    return ptr[index];
+int EEPROM_Int::get() {
+    return val;
 }
 
-void EEPROM_Int::put(int val, int index) {
-    if(index==-1) index = indx;
-    ptr[index] = val;
-    write_int(offset+(index*2), val);
+void EEPROM_Int::put(int16_t _val) {
+    val = _val;
+    fit_range();
+    // val = min(max,_val);
+    // val = max(min,val);
+    //Serial.println("Write int: "+ String(offset));
+    write_int(offset, val);
+}
+
+void EEPROM_Int::inc(int16_t by_val) {
+    val += by_val;
+    fit_range();
+    write_int(offset, val);
+}
+
+void EEPROM_Int::fit_range(void) {
+    if(val < min) val = max;
+    if(val > max) val = min;
+    // val = min(max,val);
+    // val = max(min,val);
 }
 
 

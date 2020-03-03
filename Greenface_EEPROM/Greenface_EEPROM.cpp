@@ -59,7 +59,7 @@ void Greenface_EEPROM::put(int framAddr, uint8_t* ptr, uint16_t num_bytes) {
     }
 }
 
-uint16_t Greenface_EEPROM::begin() {
+uint16_t Greenface_EEPROM::begin(boolean inc_ctr) {
 	if (fram.begin())
 	{ // you can stick the new i2c addr in here, e.g. begin(0x51);
 		Serial.println("Found I2C FRAM");
@@ -77,7 +77,7 @@ uint16_t Greenface_EEPROM::begin() {
 	Serial.println(" times");
 	// Test write ++
 	//fram.write8(0x0, test + 1);
-	write_int(0x0, test + 1);
+	if(inc_ctr) write_int(0x0, test + 1);
     return 0;
 }
 
@@ -100,4 +100,46 @@ void Greenface_EEPROM::dump(int start=0, int len=64) {
 		Serial.print(" ");
 	}
 }
+
+void Greenface_EEPROM::test() {
+	Serial.println("Offset: " + String(offset) + " Size: " + String(size));
+	dump(offset,64);
+	Serial.println("");
+    return;
+
+//   Serial.println("Fxn max: "+String(fxn.max));
+//   Serial.println("Params: "+String(params.get(0)));
+//   Serial.println("Params offset: "+String(params.offset));
+//   Serial.println("Repeat val: "+String(repeat_on.get()));
+	// test eeprom routines
+  //eeprom.write_int(128,255);
+	// int val=-1;
+	// uint8_t byte = eeprom.read(0x01);
+	// Serial.print("Byte1 = ");
+	// Serial.println(byte++);
+	// boolean u = eeprom.update(0x06,byte);
+	// Serial.println(u ? "Updated" : "Not changed");
+	// eeprom.write(0x02,0x55);
+	// eeprom.put(2, (uint8_t*)&val, sizeof(val));
+	// String b = "zBCDEF";
+	// //Serial.print("\rb: "+b);
+	// //Serial.println(sizeof(b));
+	// eeprom.put(64, (uint8_t*)&b[0], b.length());
+
+	// int arr[10] = {10,2,3,4,5,6,7,8,9,10};
+	// eeprom.put(10,(uint8_t*) &arr[0], sizeof(arr));
+	// eeprom.get(10,(uint8_t*) arr, sizeof(arr));
+	// Serial.print("arr: ");
+	// Serial.println(sizeof(arr));
+	// Serial.print("[6]: ");
+	// for(int i=0;i<sizeof(arr)/sizeof(arr[0]);i++) {
+	// 	Serial.println(arr[i]);
+	// }
+	// val = eeprom.read_int(0);
+	// Serial.print("Val: ");
+	// Serial.println(val);
+	// params.dump(0,256);
+}
+
+
 
