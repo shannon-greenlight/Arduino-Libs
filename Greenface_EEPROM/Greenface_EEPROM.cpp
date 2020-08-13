@@ -62,7 +62,7 @@ void Greenface_EEPROM::put(int framAddr, uint8_t* ptr, uint16_t num_bytes) {
 uint16_t Greenface_EEPROM::begin(boolean inc_ctr) {
 	if (fram.begin())
 	{ // you can stick the new i2c addr in here, e.g. begin(0x51);
-		Serial.println("Found I2C FRAM");
+		if(inc_ctr) Serial.println("\nFound I2C FRAM");
 	}
 	else
 	{
@@ -72,9 +72,11 @@ uint16_t Greenface_EEPROM::begin(boolean inc_ctr) {
 	// Read the first byte
 	//uint8_t test = fram.read8(0x0);
 	int test = read_int(0x0);
-	Serial.print("Restarted ");
-	Serial.print(test);
-	Serial.println(" times");
+	if(inc_ctr) {
+		Serial.print("Restarted ");
+		Serial.print(test);
+		Serial.println(" times");
+	}
 	// Test write ++
 	//fram.write8(0x0, test + 1);
 	if(inc_ctr) write_int(0x0, test + 1);

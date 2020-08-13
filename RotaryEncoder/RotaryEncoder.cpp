@@ -63,7 +63,7 @@ void RotaryEncoder::bChanInt() {
 
 
 void RotaryEncoder::updateEncoder() {
-  t.print("");
+  //t.print("");
   int MSB = digitalRead(MSB_A); //MSB = most significant bit - A terminal
   int LSB = digitalRead(LSB_B); //LSB = least significant bit - B terminal
   //int state;
@@ -72,8 +72,8 @@ void RotaryEncoder::updateEncoder() {
   switch(state) {
     case REST:
 	  if(debug)  {
-        t.setRow("10");
-        t.clrBelowCursor();
+        // t.setRow("10");
+        // t.clrBelowCursor();
 	  }
       switch(encoded) {
         case 0:
@@ -131,12 +131,13 @@ void RotaryEncoder::updateEncoder() {
       break;
   }
   if(debug) {
-    t.setRow(String(15+encoded));
-    t.clrBelowCursor();
-    t.println("Encoded: "+String(encoded) + " State: "+ String(state)+ " Channel: "+channel);
+    // t.setRow(String(15+encoded));
+    // t.clrBelowCursor();
+    // t.println("Encoded: "+String(encoded) + " State: "+ String(state)+ " Channel: "+channel);
   }
 }
 
 // Private Methods ////////////////////////////////////////////////////////////
 // Functions only available to other functions in this library
 
+RotaryEncoder e;  // external 

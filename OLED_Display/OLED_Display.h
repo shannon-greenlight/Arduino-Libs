@@ -5,7 +5,6 @@
 #include <ArducamSSD1306.h>    // Modification of Adafruit_SSD1306 for ESP8266 compatibility
 #include <Adafruit_GFX.h>   // Needs a little change in original Adafruit library (See README.txt file)
 
-
 // OLED Display
 /*
 HardWare I2C pins
@@ -102,8 +101,19 @@ class OLED_Display {
       for(int i=0;i<num_lines;i++) {
         drawHLine(lines[i]+offset,BLACK);
       }
-      Serial.println("Hilighting: "+String(lines[line_num]+offset));
+      //Serial.println("Hilighting: "+String(lines[line_num]+offset));
       drawHLine(lines[line_num]+offset,WHITE);
+    }
+
+    void hiliteChar(uint16_t line_num, uint8_t char_num ) {
+      int num_lines=3;
+      int offset=9;
+      for(int i=0;i<num_lines;i++) {
+        drawHLine(lines[i]+offset,BLACK);
+      }
+      Serial.println("Hilighting: "+String(lines[line_num]+offset));
+      printText("_",char_num,lines[line_num]+offset,1);
+      //drawHLine(lines[line_num]+offset,WHITE);
     }
 
     void fill(int color=WHITE,int offset=0) {
@@ -146,6 +156,7 @@ class OLED_Display {
     void printParam(String label, int param, int digits, const char* format, uint16_t line_num, int font_size=1,String suffix="") {
       char buf[10] = {0,0,0,0,0,0,0,0,0,0}; // buffer to print up to 9 digits
       //String format = "%"+String(digits)+"d";
+      Serial.println("Format: "+String(format));
       snprintf(buf, digits+1, format, param);
       printLine(label+String(buf)+suffix,lines[line_num],font_size);
       //char* rows[3] = {PULSE_LEN_ROW,DECAY_ROW,RANDOM_ROW};
@@ -164,6 +175,17 @@ class OLED_Display {
           row = "0";
       }
       t.printVal(row, label, String(buf));
+    }
+
+    void underline_char(byte char_num, byte line_num,int font_size=2,int offset=0) {
+      String prefix = "";
+      for(int i=0;i<char_num;i++) {
+        prefix += " ";
+      }
+      // Serial.println("Prefix: " + prefix);
+      fill(BLACK, lines[line_num]+offset);
+      printLine(prefix + "-",lines[line_num]+offset,font_size);
+      //(*display).println(prefix + "-");
     }
 
     void greet() {

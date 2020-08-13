@@ -37,7 +37,7 @@ class RotaryEncoder
 	void updateEncoder(void);
 	void aChanInt(void);
 	void bChanInt(void);
-	TerminalVT100 t;
+	// TerminalVT100 t;
 	bool debug = false;
 	
   // library-accessible "private" interface
@@ -46,6 +46,8 @@ class RotaryEncoder
 	int encoderValue;
 	String channel; // A or B
 };
+
+extern RotaryEncoder e;
 
 #endif
 
