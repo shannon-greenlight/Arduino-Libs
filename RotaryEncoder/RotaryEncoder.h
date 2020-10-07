@@ -14,10 +14,6 @@
 #define CCW 2
 #define UNK 3
 
-// pins
-#define MSB_A 3
-#define LSB_B 2
-
 // include types & constants of Wiring core API
 #include "Arduino.h"
 #include <TerminalVT100.h>
@@ -35,6 +31,8 @@ class RotaryEncoder
 	int getEncoderValue(void);
 	void setEncoderValue(int);
 	void updateEncoder(void);
+	byte msb_pin=2;
+	byte lsb_pin=3;
 	void aChanInt(void);
 	void bChanInt(void);
 	// TerminalVT100 t;

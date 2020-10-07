@@ -20,10 +20,10 @@ RotaryEncoder::RotaryEncoder()
   state = REST;
   setEncoderValue(0);
   
-  pinMode(MSB_A, INPUT);	// MSB - A terminal
-  pinMode(LSB_B, INPUT);	// LSB - B terminal
-  digitalWrite(MSB_A, HIGH); //turn pullup resistor on
-  digitalWrite(LSB_B, HIGH); //turn pullup resistor on
+  pinMode(msb_pin, INPUT);	// MSB - A terminal
+  pinMode(lsb_pin, INPUT);	// LSB - B terminal
+  digitalWrite(msb_pin, HIGH); //turn pullup resistor on
+  digitalWrite(lsb_pin, HIGH); //turn pullup resistor on
 
 }
 
@@ -64,8 +64,8 @@ void RotaryEncoder::bChanInt() {
 
 void RotaryEncoder::updateEncoder() {
   //t.print("");
-  int MSB = digitalRead(MSB_A); //MSB = most significant bit - A terminal
-  int LSB = digitalRead(LSB_B); //LSB = least significant bit - B terminal
+  int MSB = digitalRead(msb_pin); //MSB = most significant bit - A terminal
+  int LSB = digitalRead(lsb_pin); //LSB = least significant bit - B terminal
   //int state;
   int encoded = (MSB << 1) |LSB; //converting the 2 pin value to single number
   //debugInt("Encoded: ",encoded);

@@ -67,3 +67,5 @@ __vm*
 .vs/*
 *.vcxproj*
 Test/*
+secrets
+OLED_Display/*

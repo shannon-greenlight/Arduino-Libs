@@ -4,8 +4,6 @@
 #define WIFI_Util_h
 
 // WiFi
-// char ssid[] = "GreenNet";    // your network SSID (name)
-// char pass[] = "nambypardle"; // your network password (use for WPA, or use as key for WEP)
 String ssid = "";    // your network SSID (name)
 String pass = ""; // your network password (use for WPA, or use as key for WEP)
 int keyIndex = 0;            // your network key Index number (needed only for WEP)
