@@ -10,18 +10,6 @@
 // include types & constants of Wiring core API
 #include "Arduino.h"
 
-#define FXN_ROW "6"
-#define PULSE_LEN_ROW "7"
-#define DECAY_ROW "8"
-#define RANDOM_ROW "9"
-#define SEQUENCE_ROW "8"
-#define SEQ_INDEX_ROW "9"
-#define USER_VAR_ROW 10
-#define TRIGGER_ROW "20"
-#define DEBUG_ROW "21"
-#define INPUT_ROW "21"
-#define MSG_ROW "21"
-
 // library interface description
 class TerminalVT100
 {

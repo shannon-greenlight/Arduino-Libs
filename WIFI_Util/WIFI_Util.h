@@ -4,10 +4,10 @@
 #define WIFI_Util_h
 
 // WiFi
-String ssid = "";    // your network SSID (name)
+String ssid = ""; // your network SSID (name)
 String pass = ""; // your network password (use for WPA, or use as key for WEP)
-int keyIndex = 0;            // your network key Index number (needed only for WEP)
-int wifi_chk_time = 0;
+int keyIndex = 0; // your network key Index number (needed only for WEP)
+unsigned int wifi_chk_time = 0;
 
 int wifi_status = WL_IDLE_STATUS;
 WiFiServer server(80);
@@ -36,7 +36,7 @@ void printWifiStatus()
     Serial.println(ip);
 }
 
-//int count = 0;
+// int count = 0;
 String getEncryptionType(int thisType)
 {
     // read the encryption type and print out the name:
@@ -66,7 +66,7 @@ String getEncryptionType(int thisType)
 
 String getConnectionStatus(int thisType)
 {
-// read the connection type and print out the name:
+    // read the connection type and print out the name:
     switch (thisType)
     {
     case WL_NO_MODULE:
@@ -139,7 +139,8 @@ void printMacAddress(byte mac[])
     Serial.println();
 }
 
-String getEnc(int thisNet) {
+String getEnc(int thisNet)
+{
     return getEncryptionType(WiFi.encryptionType(thisNet));
 }
 
@@ -150,7 +151,7 @@ String getSsid(int thisNet, boolean show_encryption = true)
     if (show_encryption)
     {
         enc = " (" + getEnc(thisNet) + ")";
-        ssid = ssid.substring(0,14);
+        ssid = ssid.substring(0, 14);
     }
     return ssid + enc;
 }
@@ -216,22 +217,27 @@ void WIFI_setup()
     // attempt to connect to Wifi network:
     if (wifi_status != WL_CONNECTED)
     {
-        Serial.println(""); // print the network name (SSID);
+        Serial.println("");                                    //
+        Serial.println("wifi_status: " + String(wifi_status)); // print the status
         Serial.print("Attempting to connect to Network named: ");
-        Serial.println(ssid);                   // print the network name (SSID);
+        Serial.println(ssid); // print the network name (SSID);
 
         Serial.print("password: ");
-        Serial.println(pass);                   // print the password;
+        Serial.println(pass); // print the password;
 
         // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
         wifi_status = WiFi.begin(ssid.c_str(), pass.c_str());
         // wait 10 seconds for connection:
         wifi_chk_time = millis() + 10000;
-        //delay(10000);
-    } else {
-        server.begin();    // start the web server on port 80
-        printWifiStatus(); // you're connected now, so print out the status
-        //listNetworks();
+        // delay(10000);
+    }
+    else
+    {
+        Serial.println("");                                         //
+        Serial.println("Server beginning: " + String(wifi_status)); // print the status
+        server.begin();                                             // start the web server on port 80
+        printWifiStatus();                                          // you're connected now, so print out the status
+        // listNetworks();
     }
 }
 

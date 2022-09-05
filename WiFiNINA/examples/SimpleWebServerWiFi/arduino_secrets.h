@@ -1,2 +1,2 @@
-#define SECRET_SSID "GreenNet"
-#define SECRET_PASS "nambypardle"
+#define SECRET_SSID ""
+#define SECRET_PASS ""

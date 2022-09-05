@@ -1,6 +1,0 @@
-{
-    "board": "arduino:samd:nano_33_iot",
-    "port": "COM6",
-    "sketch": "Arducam_ssd1306_128x64_I2C.ino",
-    "programmer": "AVR ISP"
-}

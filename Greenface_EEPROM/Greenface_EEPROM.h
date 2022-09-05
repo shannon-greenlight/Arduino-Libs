@@ -12,7 +12,6 @@
 #include <TerminalVT100.h>
 #include <Adafruit_FRAM_I2C.h>
 
-
 // library interface description
 class Greenface_EEPROM
 {
@@ -22,7 +21,7 @@ public:
     static int eeprom_offset;
     uint16_t size;
     int offset;
-    uint16_t begin(boolean inc_ctr);                 // overrides fram begin, returns base address 0x00
+    uint16_t begin(boolean inc_ctr);      // overrides fram begin, returns base address 0x00
     uint16_t end(void) { return 0x8000; } //Standards requires this to be the item after the last valid entry. The returned pointer is invalid.
     uint16_t length() { return end() - 1; }
     void dump(int start, int len);
@@ -35,6 +34,7 @@ public:
     void get(int framAddr, uint8_t *ptr, uint16_t num_bytes);
     void put(int framAddr, uint8_t *ptr, uint16_t num_bytes);
     void test(void);
+    void init(void);
     Adafruit_FRAM_I2C fram;
 
     // library-accessible "private" interface

@@ -8,21 +8,22 @@
 #include <Greenface_EEPROM.h>
 
 // library interface description
-class EEPROM_Arr16: public Greenface_EEPROM
+class EEPROM_Arr16 : public Greenface_EEPROM
 {
     // user-accessible "public" interface
 public:
-    EEPROM_Arr16(uint16_t * _ptr, uint16_t _size);
-    //static Greenface_EEPROM gfram;
-    uint16_t * ptr;
+    EEPROM_Arr16(uint16_t *_ptr, uint16_t _size);
+    // static Greenface_EEPROM gfram;
+    uint16_t *ptr;
     uint16_t indx;
     uint16_t length() { return size; }
     void xfer(); // xfer from eeprom to array
-    int get(uint16_t index=-1);
-    void put(uint16_t val, uint16_t index=-1);
-    //boolean update(int framAddr, uint8_t val);
-    //void write(int framAddr, uint8_t val);
-    //void dump(int start, int len);
+    int get(uint16_t index = -1);
+    void put(uint16_t val, uint16_t index = -1);
+    void fill(uint16_t val);
+    // boolean update(int framAddr, uint8_t val);
+    // void write(int framAddr, uint8_t val);
+    // void dump(int start, int len);
 
     // library-accessible "private" interface
 private:

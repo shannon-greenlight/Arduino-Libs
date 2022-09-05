@@ -9,17 +9,18 @@
 
 // library interface description
 // Note: this is for a 16 bit int
-class EEPROM_Int: public Greenface_EEPROM
+class EEPROM_Int : public Greenface_EEPROM
 {
     // user-accessible "public" interface
 public:
     EEPROM_Int(int16_t _min, int16_t _max);
-    int16_t max,min;
+    EEPROM_Int();
+    int16_t max, min;
     void xfer(); // xfer from eeprom to int
     int get();
     void put(int16_t _val);
-    void inc(int16_t by_val=1);
-    //boolean update(int val);
+    void inc(int16_t by_val = 1);
+    // boolean update(int val);
 
     // library-accessible "private" interface
 private:

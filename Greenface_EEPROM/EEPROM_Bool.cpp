@@ -5,43 +5,39 @@
 #include <Greenface_EEPROM.h>
 #include <EEPROM_Bool.h>
 
-EEPROM_Bool::EEPROM_Bool() {
+EEPROM_Bool::EEPROM_Bool()
+{
     offset = eeprom_offset;
     size = sizeof(boolean);
     eeprom_offset += 2;
     val = false;
-    // begin();
-    // xfer();
 }
 
-void EEPROM_Bool::xfer() {
-    // if(read(offset)) {
-    //     val = true;
-    // } else {
-    //     val = false;
-    // }
+void EEPROM_Bool::xfer()
+{
     val = read(offset) ? true : false;
-    Serial.println("Xfer bool: "+String(offset) + " val: " + String(val));
+    // Serial.println("Xfer bool: "+String(offset) + " val: " + String(val));
 }
 
-int EEPROM_Bool::get() {
-    return val==true;
+int EEPROM_Bool::get()
+{
+    return val == true;
 }
 
-void EEPROM_Bool::set() {
+void EEPROM_Bool::set()
+{
     val = true;
     write(offset, val);
 }
 
-void EEPROM_Bool::reset() {
+void EEPROM_Bool::reset()
+{
     val = false;
     write(offset, val);
 }
 
-void EEPROM_Bool::toggle() {
+void EEPROM_Bool::toggle()
+{
     val = !val;
     write(offset, val);
 }
-
-
-
