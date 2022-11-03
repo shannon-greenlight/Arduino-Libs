@@ -174,7 +174,7 @@ void wifi_attempt_connect(boolean force)
             wifi_active.set();
         }
 
-        if (wifi_status != WL_CONNECTED)
+        if (wifi_status != WL_CONNECTED && wifi_password.get() != "" && wifi_ssid.get() != "")
         {
             wifi_connect();
             delay(2000);
