@@ -45,8 +45,8 @@ void Greenface_AD5328::factory_reset()
 
 void Greenface_AD5328::dac_out(unsigned int dac_num, unsigned int val)
 {
-    val &= 0x03ff;
-    val = val << 2;
+    // val &= 0x03ff;
+    // val = val << 2;
     val |= dac_num << 12;
     send_to_device(val);
 }
