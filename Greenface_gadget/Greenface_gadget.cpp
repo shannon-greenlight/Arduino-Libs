@@ -222,7 +222,7 @@ void Greenface_gadget::adjust_param(int e, unsigned long delta)
         multiplier = pow(10, dig);
         the_param += e * multiplier;
         // Serial.println("param: " + String(the_param));
-        the_param = constrain(the_param, 0, 32767);
+        the_param = constrain(the_param, 0, 0xFFFF);
         put_param(the_param);
         break;
     }
@@ -350,20 +350,23 @@ void Greenface_gadget::put_param(uint16_t val, int8_t _param_num)
 {
     String s;
     int save_param_num = param_num;
+    // Serial.println("Val: " + String(val));
+    // Serial.println("Max: " + String(get_max()));
+    // Serial.println("Min: " + String(get_min()));
     if (_param_num != -1)
     {
         param_num = _param_num;
     }
     if (val > get_max())
         val = get_max();
-    if (val < get_min() || val > 32767)
+    // ui.terminal_debug("Param num: " + String(_param_num) + " Val: " + String(val));
+    if (val < get_min())
         val = get_min();
     // Serial.print("final val: ");
     // Serial.println(val);
     if (check_params)
         val = check_param(val);
 
-    // ui->terminal_debug("Param num: " + String(_param_num) + " Val: " + String(val));
     param_put(val, param_num);
     printParam();
     exe_update_fxn();
@@ -501,6 +504,7 @@ String Greenface_gadget::params_toJSON()
     String out = "";
     String s, label;
     uint8_t param_type;
+    bool alt_done;
 
     for (int i = 0; i < num_params; i++)
     {
@@ -515,26 +519,42 @@ String Greenface_gadget::params_toJSON()
         out += toJSON("label", label);
         out += ", ";
 
-        param_type = get_param_type(i);
-        switch (param_type)
+        alt_done = false;
+        if (alt_values)
         {
-        case SPANK_STRING_PARAM_TYPE:
-            out += toJSON("type", "select");
-            out += ", ";
-            out += toJSON("values", string_params[i]);
-            out += ", ";
-            out += toJSON("value", csv_elem(string_params[i], ',', get_param(i)));
-            break;
-        case SPANK_STRING_VAR_TYPE:
-            out += toJSON("type", "text");
-            out += ", ";
-            out += toJSON("value", get_param_as_string_var(i));
-            break;
-        default:
-            out += toJSON("type", "number");
-            out += ", ";
-            out += toJSON("value", String(get_param_w_offset(i)));
-            break;
+            String alt_value = alt_values[i];
+            if (alt_value.length() > 0)
+            {
+                out += toJSON("type", "text");
+                out += ", ";
+                out += toJSON("value", alt_value);
+                alt_done = true;
+            }
+        }
+
+        if (!alt_done)
+        {
+            param_type = get_param_type(i);
+            switch (param_type)
+            {
+            case SPANK_STRING_PARAM_TYPE:
+                out += toJSON("type", "select");
+                out += ", ";
+                out += toJSON("values", string_params[i]);
+                out += ", ";
+                out += toJSON("value", csv_elem(string_params[i], ',', get_param(i)));
+                break;
+            case SPANK_STRING_VAR_TYPE:
+                out += toJSON("type", "text");
+                out += ", ";
+                out += toJSON("value", get_param_as_string_var(i));
+                break;
+            default:
+                out += toJSON("type", "number");
+                out += ", ";
+                out += toJSON("value", String(get_param_w_offset(i)));
+                break;
+            }
         }
 
         out += ", ";
