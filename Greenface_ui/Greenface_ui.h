@@ -21,7 +21,7 @@
 
 #define OLED_RESET 16 // Pin 15 -RESET digital signal
 
-extern String version_num;
+extern String version_num, old_status;
 extern String settings_get_device_name();
 
 class Greenface_ui
@@ -416,8 +416,9 @@ public:
   void newFxn(String fxn)
   {
     clearDisplay();
-    t.clrDown(FXN_ROW);
     terminalSplash();
+    t.clrDown(FXN_ROW);
+    old_status = "I need changing!"; // force reprint of status_string
     printLine(fxn, 0, fxn.length() > 9 ? 1 : 2);
   }
 
