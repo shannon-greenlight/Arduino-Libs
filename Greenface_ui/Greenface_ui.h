@@ -51,6 +51,15 @@ public:
     showDisplay();
   }
 
+  void initDisplay()
+  {
+    (*display).begin(SSD1306_SWITCHCAPVCC, 0x3C); // Switch OLED
+    // Clear the buffer.
+    (*display).clearDisplay();
+    (*display).stopscroll();
+    (*display).setTextColor(WHITE, BLACK);
+  }
+
   void begin(const uint8_t *bitmap)
   {
     t.begin();
