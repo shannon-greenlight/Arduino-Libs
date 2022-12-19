@@ -15,16 +15,20 @@ EEPROM_String::EEPROM_String(uint16_t _size)
 
 void EEPROM_String::xfer()
 {
-    // Serial.println("Offset String:"+ String(offset)+ " Size: " + String(size));
-    int i = 0;
-    byte b;
-    do
+    if (val == "")
     {
-        b = read(offset + i);
-        if (b)
-            val += char(b);
-        i++;
-    } while (b);
+        // Serial.println("Xfer String, offset:" + String(offset) + " size: " + String(size) + " val: " + val);
+        int i = 0;
+        byte b;
+        do
+        {
+            b = read(offset + i);
+            if (b)
+                val += char(b);
+            i++;
+        } while (b && i < size);
+    }
+    // Serial.println("val: " + val);
     // for(uint16_t i=0; i<size;i++) {
     //     val += char(read(offset+(i)));
     // }
