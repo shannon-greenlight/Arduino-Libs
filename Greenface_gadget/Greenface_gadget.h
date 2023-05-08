@@ -20,7 +20,7 @@
 #define SPANK_INT_PARAM_TYPE 0
 #define SPANK_STRING_PARAM_TYPE 1
 #define SPANK_STRING_VAR_TYPE 2
-#define SPANK_FLOAT_VAR_TYPE 3
+#define SPANK_FIXED_POINT_TYPE 3
 
 extern Greenface_ui ui;
 extern String toJSON(String, String);
@@ -40,6 +40,7 @@ public:
     EEPROM_String *string_vars;
     int16_t *offsets;
     bool *active_params;
+    int8_t *decimal_places;
     boolean check_params = false;
 
     uint16_t num_params;
@@ -50,6 +51,7 @@ public:
     uint8_t get_param_type(int);
     uint16_t get_param(int16_t indx = -1);     // returns raw
     int get_param_w_offset(int16_t indx = -1); // returns offset param as int
+    float get_param_as_float(int16_t indx = -1);
     String get_param_as_string(int16_t indx = -1);
     String get_param_as_string_var(int16_t indx = -1);
     bool get_param_active(int16_t indx = -1);
@@ -102,7 +104,7 @@ public:
 private:
     EEPROM_Arr16 params;
     uint8_t get_num_digits(int);
-    String calc_format(uint8_t);
+    String calc_format(uint8_t, bool);
     void print_param(uint16_t, uint16_t);
     void print_string_param(uint16_t, uint16_t);
     void print_string_var(uint16_t, uint16_t);

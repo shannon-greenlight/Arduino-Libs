@@ -67,14 +67,17 @@ uint8_t Greenface_gadget::get_param_type(int p_num)
             {
                 return SPANK_STRING_VAR_TYPE;
             }
-            else if (string_params[p_num] == "#~")
-            {
-                return SPANK_FLOAT_VAR_TYPE;
-            }
             else
             {
                 return SPANK_STRING_PARAM_TYPE;
             }
+        }
+    }
+    if (decimal_places)
+    {
+        if (decimal_places[p_num] > 0)
+        {
+            return SPANK_FIXED_POINT_TYPE;
         }
     }
     return SPANK_INT_PARAM_TYPE;
@@ -114,9 +117,14 @@ int Greenface_gadget::get_param_w_offset(int16_t indx)
         param += offsets[indx];
     }
     // hmmm... no constraints?
-    // param = min(get_max(indx), param);
-    // param = max(get_min(indx), param);
     return param;
+}
+
+float Greenface_gadget::get_param_as_float(int16_t indx)
+{
+    float p = float(get_param_w_offset(indx));
+    double divisor = pow(10, decimal_places[indx]);
+    return p / divisor;
 }
 
 String Greenface_gadget::get_param_as_string(int16_t indx)
@@ -175,7 +183,7 @@ int Greenface_gadget::get_max_w_offset(int16_t indx)
 {
     if (indx == -1)
         indx = param_num;
-    int16_t max = maxs[indx];
+    int max = maxs[indx];
     if (offsets)
     {
         max += offsets[indx];
@@ -218,9 +226,16 @@ void Greenface_gadget::adjust_param(int e, unsigned long delta)
         int multiplier = 1;
         uint8_t ndigs = get_num_digits(param_num);
         int dig = (ndigs - digit_num) - 1;
-        // Serial.println("mult: "+String(dig));
+        if (decimal_places)
+        {
+            if (dig > decimal_places[param_num] && decimal_places[param_num] > 0)
+            {
+                dig--;
+            }
+        }
         multiplier = pow(10, dig);
         the_param += e * multiplier;
+        // Serial.println("dig: " + String(dig) + " ndigs: " + String(ndigs) + " multiplier: " + String(multiplier) + " the_param: " + String(the_param) + " dir: " + String(e));
         // Serial.println("param: " + String(the_param));
         the_param = constrain(the_param, 0, 0xFFFF);
         put_param(the_param);
@@ -274,6 +289,15 @@ void Greenface_gadget::print_param(uint16_t p_num, uint16_t line_num)
     uint8_t param_type = get_param_type(p_num);
     float param_float;
     String label = get_label(p_num);
+    String output = "";
+    int dp;
+    int frac_part, int_part;
+    String sign;
+    char intgr[5];
+    char fract[5];
+    char fmt[10];
+    int places;
+    uint8_t ndigs = get_num_digits(p_num);
 
     if (alt_values)
     {
@@ -293,21 +317,56 @@ void Greenface_gadget::print_param(uint16_t p_num, uint16_t line_num)
     case SPANK_STRING_VAR_TYPE:
         print_string_var(p_num, line_num);
         break;
-    case SPANK_FLOAT_VAR_TYPE:
-        param_float = (float)get_param(p_num);
-        param_float = -5.0;
-        ui.printLine(label + ui.format_float(param_float, 5), ui.lines[line_num], 1);
-        // ui.printParam(get_label(p_num), get_param(p_num), ndigs, formatf, line_num);
+    case SPANK_FIXED_POINT_TYPE:
+        dp = (pow(10, decimal_places[p_num]));
+        int_part = abs(get_max_w_offset(p_num)) / dp;
+        sign = get_param_w_offset(p_num) >= 0 ? "+" : "-";
+        if (int_part == 0)
+        {
+            places = 1;
+        }
+        else
+        {
+            places = int(log10(float(int_part)));
+        }
+        places++;
+        // ui.terminal_debug(" places: " + String(places) + " int_part: " + String(int_part));
+        // fmt = "%0+";
+        strcpy(fmt, "%0");
+        strcat(fmt, String(places).c_str());
+        strcat(fmt, "d");
+        // Serial.println("FMT Int part: " + String(fmt) + " int_part: " + String(int_part) + " dp: " + String(dp));
+
+        int_part = abs(get_param_w_offset(p_num)) / dp;
+        sprintf(intgr, fmt, int_part, places);
+
+        frac_part = abs(get_param_w_offset(p_num)) % dp;
+        memset(fmt, '\0', sizeof(fmt));
+        strcpy(fmt, "%0");
+        strcat(fmt, String(decimal_places[p_num]).c_str());
+        strcat(fmt, "d");
+        // Serial.println("FMT Frac part: " + String(fmt) + " frac_part: " + String(frac_part));
+        sprintf(fract, fmt, frac_part);
+        output = sign + String(intgr) + "." + String(fract);
+
+        ui.printLine(label + output, ui.lines[line_num], 1);
+
         break;
     default:
-        uint8_t ndigs = get_num_digits(p_num);
-        String fmt = calc_format(ndigs);
+        bool is_offset = false;
+        if (offsets)
+        {
+            if (offsets[p_num] != 0)
+                is_offset = true;
+        }
+        String fmt = calc_format(ndigs, is_offset);
         const char *format = fmt.c_str();
         int param = get_param(p_num);
         if (offsets)
         {
             param += offsets[p_num];
         }
+        // ui.terminal_debug("Param: " + String(param) + " ndigs: " + String(ndigs) + " fmt: " + fmt);
         ui.printParam(get_label(p_num), param, ndigs, format, line_num);
         break;
     }
@@ -394,6 +453,13 @@ void Greenface_gadget::put_param_num(int val)
     _val = min(num_params - 1, _val);
     param_num = _val;
     digit_num = 0; // might only have one digit
+    if (decimal_places)
+    {
+        if (decimal_places[param_num])
+        {
+            digit_num = 1;
+        }
+    }
 }
 
 void Greenface_gadget::insert_char(char c)
@@ -432,9 +498,9 @@ void Greenface_gadget::inc_param_num_by(int val)
         if (param_num > num_params - 1)
             param_num = 0;
     }
-    digit_num = 0;
+    uint16_t num_digs = get_num_digits(param_num);
+    digit_num = num_digs - 1;
     display();
-    // printParams();
     // ui.terminal_debug("Inc param num by: " + String(val));
 }
 
@@ -454,16 +520,53 @@ void Greenface_gadget::put_dig_num(int val)
 
 void Greenface_gadget::inc_dig_num_by(int val)
 {
-    // uint8_t num_digs = log10(get_max(param_num))+1;
-    if (get_max() >= 10 || get_param_type(param_num) == SPANK_STRING_VAR_TYPE)
+    uint8_t num_digs = log10(get_max_w_offset(param_num)) + 1;
+    uint8_t param_type = get_param_type(param_num);
+    // ui.terminal_debug("Dig# " + String(digit_num) + " Num Digs " + String(num_digs) + " param num: " + String(param_num) + " max: " + String(get_max_w_offset(param_num)));
+    if (get_max() >= 10 || param_type == SPANK_STRING_VAR_TYPE)
     {
-        uint16_t num_digs = get_num_digits(param_num);
+        // uint16_t num_digs = get_num_digits(param_num);
         digit_num += val;
         if (digit_num < 0)
             digit_num = 0;
-        if (digit_num > num_digs - 1)
-            digit_num = 0;
-        // Serial.println("Dig# " + String(digit_num) + " Digs " + String(num_digs));
+        if (param_type == SPANK_FIXED_POINT_TYPE)
+        {
+            num_digs++; // account for dp
+            if (digit_num == 0 || digit_num > num_digs)
+                digit_num = 1;
+            if (digit_num == num_digs - decimal_places[param_num])
+            {
+                digit_num += val;
+                // Serial.println("Skipping decimal point: Dig# " + String(digit_num) + " Num Digs " + String(num_digs));
+            }
+            else
+            {
+                // Serial.println("");
+            }
+        }
+        else
+        {
+            int end_dig = num_digs - 1;
+            if (offsets)
+            {
+                if (offsets[param_num] < 0)
+                {
+                    end_dig = num_digs;
+                }
+            }
+            if (digit_num > end_dig)
+                digit_num = 0;
+        }
+        if (offsets)
+        {
+            // if ((decimal_places[param_num] > 1 || offsets[param_num] < 0) && digit_num == 0)
+            if (offsets[param_num] < 0 && digit_num == 0)
+            {
+                digit_num++;
+                // Serial.println("Bumping: Dig# " + String(digit_num));
+            }
+        }
+        // Serial.println("Final: Dig# " + String(digit_num));
         printParam();
         hilight_param();
     }
@@ -505,6 +608,7 @@ String Greenface_gadget::params_toJSON()
     String s, label;
     uint8_t param_type;
     bool alt_done;
+    String tempval;
 
     for (int i = 0; i < num_params; i++)
     {
@@ -552,13 +656,21 @@ String Greenface_gadget::params_toJSON()
             default:
                 out += toJSON("type", "number");
                 out += ", ";
-                out += toJSON("value", String(get_param_w_offset(i)));
+                if (false && decimal_places[i] > 0)
+                {
+                    tempval = String(get_param_as_float(i));
+                }
+                else
+                {
+                    tempval = String(get_param_w_offset(i));
+                }
+                out += toJSON("value", tempval);
                 break;
             }
         }
 
         out += ", ";
-        out += toJSON("numeric_val", String(get_param(i)));
+        out += toJSON("numeric_val", String(get_param_w_offset(i)));
         out += ", ";
         out += toJSON("param_num", String(i));
         out += ", ";
@@ -574,6 +686,8 @@ String Greenface_gadget::params_toJSON()
         out += toJSON("num_digits", String(num_digits));
         out += ", ";
         out += toJSON("selected", enable_hilight && param_num == i ? "true" : "false");
+        out += ", ";
+        out += toJSON("dp", String(decimal_places[i]));
         out += " }";
     }
     return "[" + out + "]";
@@ -674,16 +788,23 @@ uint8_t Greenface_gadget::get_num_digits(int this_param_num)
         return string_vars[get_param(this_param_num)].size;
         break;
     default:
-        int pad = offsets[this_param_num] < 0 ? 2 : 1;
-        return log10(get_max(this_param_num)) + pad;
+        uint16_t dig_log = log10(abs(get_max_w_offset(this_param_num)));
+        int pad = (decimal_places[this_param_num] > 0 || offsets[this_param_num] < 0) ? 2 : 1;
+        if (decimal_places[this_param_num] > 0)
+            pad++;
+        // int pad = decimal_places[this_param_num] > 0 ? 2 : 1;
+        // ui.terminal_debug("get_num_digits pad: " + String(pad) + " this_param_num: " + String(this_param_num) + " Offset: " + String(offsets[this_param_num]));
+        // Serial.println("Decimal places: " + String(decimal_places[this_param_num]) + " Max-w-offset: " + String(get_max_w_offset(this_param_num)) + " retval: " + String(log10(abs(get_max_w_offset(this_param_num))) + pad));
+        return log10(abs(get_max_w_offset(this_param_num))) + pad;
         break;
     }
 }
 
-String Greenface_gadget::calc_format(uint8_t ndigs)
+String Greenface_gadget::calc_format(uint8_t ndigs, bool is_offset)
 {
     // uint8_t ndigs = get_num_digits(indx);
-    return "%0" + String(ndigs) + "d";
+    String plus_sign = is_offset ? "+" : "";
+    return "%0" + plus_sign + String(ndigs) + "d";
     // const char* format = fmt.c_str();
     // return format;
 }
