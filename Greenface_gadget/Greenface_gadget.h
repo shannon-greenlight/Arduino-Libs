@@ -38,9 +38,9 @@ public:
     String *string_params;
     String *alt_values;
     EEPROM_String *string_vars;
-    int16_t *offsets;
+    int16_t *offsets = nullptr;
     bool *active_params;
-    int8_t *decimal_places;
+    int8_t *decimal_places = nullptr;
     boolean check_params = false;
 
     uint16_t num_params;
