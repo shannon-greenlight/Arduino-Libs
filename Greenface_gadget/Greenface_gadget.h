@@ -8,6 +8,9 @@
 #define RANDOMNESS 3
 #define INITIAL_DELAY 4
 
+// for use with get_num_digits
+#define NUMERIC_DIGITS_ONLY true
+
 // include types & constants of Wiring core API
 #include "Arduino.h"
 #include <TerminalVT100.h>
@@ -103,7 +106,7 @@ public:
     // library-accessible "private" interface
 private:
     EEPROM_Arr16 params;
-    uint8_t get_num_digits(int);
+    uint8_t get_num_digits(int, bool numeric_only = false);
     String calc_format(uint8_t, bool);
     void print_param(uint16_t, uint16_t);
     void print_string_param(uint16_t, uint16_t);
