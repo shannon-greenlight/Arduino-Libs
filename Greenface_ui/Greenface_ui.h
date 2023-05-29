@@ -427,7 +427,7 @@ public:
     clearDisplay();
     terminalSplash();
     t.clrDown(FXN_ROW);
-    old_status = "I need changing!"; // force reprint of status_string
+    old_status = ""; // force reprint of status_string
     printLine(fxn, 0, fxn.length() > 9 ? 1 : 2);
   }
 
