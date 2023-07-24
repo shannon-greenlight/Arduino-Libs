@@ -620,7 +620,10 @@ void Greenface_gadget::printParam(int8_t _param_num)
 void Greenface_gadget::printParams()
 {
     ui.fill(BLACK, 16 + (16 * display_offset));
-    ui.t.clrDown(display_offset == 1 ? "10" : "8");
+    if (ui.terminal_mirror)
+    {
+        ui.t.clrDown(display_offset == 1 ? "10" : "8");
+    }
     hilight_param();
     // Serial.println("Num params: "+String(num_params) + " Param# "+String(param_num));
     int start = max(0, param_num - (2 - display_offset));
