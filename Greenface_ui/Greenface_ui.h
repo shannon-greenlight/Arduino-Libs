@@ -424,14 +424,14 @@ public:
 
   void newFxn(String fxn)
   {
+    clearDisplay();
     if (terminal_mirror)
     {
-      clearDisplay();
       terminalSplash();
       t.clrDown(FXN_ROW);
-      old_status = ""; // force reprint of status_string
-      printLine(fxn, 0, fxn.length() > 9 ? 1 : 2);
     }
+    old_status = ""; // force reprint of status_string
+    printLine(fxn, 0, fxn.length() > 9 ? 1 : 2);
   }
 
   String format_float(float val, int digits, const char *format = "%.2f")
