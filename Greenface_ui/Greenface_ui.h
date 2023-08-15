@@ -170,6 +170,54 @@ public:
     terminal_mirror = true;
   }
 
+  void terminal_clrDown(String row)
+  {
+    if (terminal_mirror)
+    {
+      t.clrDown(row);
+    }
+  }
+
+  void terminal_clrToEOL()
+  {
+    if (terminal_mirror)
+    {
+      t.clrToEOL();
+    }
+  }
+
+  void terminal_setRow(String row)
+  {
+    if (terminal_mirror)
+    {
+      t.setRow(row);
+    }
+  }
+
+  void terminal_setCursor(String row, String char_num)
+  {
+    if (terminal_mirror)
+    {
+      t.setCursor(row, char_num);
+    }
+  }
+
+  void terminal_print(String s)
+  {
+    if (terminal_mirror)
+    {
+      Serial.print(s);
+    }
+  }
+
+  void terminal_print(char c)
+  {
+    if (terminal_mirror)
+    {
+      Serial.print(c);
+    }
+  }
+
   void terminal_printRow(String text, String row)
   {
     if (row != "-1")
