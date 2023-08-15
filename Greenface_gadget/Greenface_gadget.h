@@ -25,6 +25,8 @@
 #define SPANK_STRING_VAR_TYPE 2
 #define SPANK_FIXED_POINT_TYPE 3
 
+#define STRING_TOKEN "$~"
+
 extern Greenface_ui ui;
 extern String toJSON(String, String);
 
@@ -79,6 +81,8 @@ public:
     void printParam(int8_t _param_num = -1);
     void printParams();
     String params_toJSON(); // for wifi
+    void set_cursor_to_param();
+    bool param_is_stringvar();
 
     void trigger(uint8_t);
     void clear_trigger(uint8_t);

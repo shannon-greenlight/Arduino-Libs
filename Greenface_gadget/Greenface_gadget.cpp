@@ -63,7 +63,7 @@ uint8_t Greenface_gadget::get_param_type(int p_num)
     {
         if (string_params[p_num].length())
         {
-            if (string_params[p_num] == "$~")
+            if (string_params[p_num] == STRING_TOKEN)
             {
                 return SPANK_STRING_VAR_TYPE;
             }
@@ -431,6 +431,21 @@ void Greenface_gadget::put_param(uint16_t val, int8_t _param_num)
     param_num = save_param_num;
 }
 
+bool Greenface_gadget::param_is_stringvar()
+{
+    return string_params[param_num] == STRING_TOKEN;
+}
+
+void Greenface_gadget::set_cursor_to_param()
+{
+    uint8_t dig_offset = get_label(param_num).length();
+    int char_num = digit_num + dig_offset + 1;
+    String row = String(min(2, param_num) * 2 + display_offset + 8);
+    // ui.terminal_debug("param_num: " + String(param_num) + " offset: " + String(display_offset));
+    ui.terminal_setCursor(row, String(char_num));
+    ui.terminal_clrToEOL();
+}
+
 void Greenface_gadget::hilight_param()
 {
     if (enable_hilight)
@@ -438,6 +453,7 @@ void Greenface_gadget::hilight_param()
         uint8_t dig_offset = get_label(param_num).length();
         int char_num = digit_num + dig_offset;
         ui.underline_char(char_num, min(2, param_num + display_offset), 1, 8);
+        // ui.terminal_debug("param_num: " + String(param_num) + " offset: " + String(display_offset));
         // ui.hiliteChar(min(2, param_num + display_offset), char_num);
         //  Serial.print ("Dig offset: "+String(dig_offset));
         //  Serial.print (" Digit #: "+String(digit_num));
