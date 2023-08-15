@@ -191,6 +191,31 @@ void wifi_connected()
     ui.printLine("Signal: " + String(WiFi.RSSI()) + " dBm", LINE_3, 1);
 }
 
+void wifi_toJSON()
+{
+    String message;
+    if (wifi_enabled())
+    {
+        String status = getConnectionStatus(wifi_status);
+        String ssid = "No Network";
+        if (status == "CONNECTED")
+        {
+            ssid = wifi_ssid.get();
+        }
+        message = "<h2>" + ssid + " </h2> ";
+        message += "<br>Status: " + status;
+        message += "<br>IP: " + IpAddress2String(WiFi.localIP());
+        message += "<br>Signal: " + String(WiFi.RSSI()) + " dBm";
+        ui.t.print(toJSON("message", message));
+        ui.t.print(",");
+    }
+    else
+    {
+        ui.t.print(toJSON("message", "<h2>WiFi Disabled</h2>See Settings."));
+        ui.t.print(",");
+    }
+}
+
 void wifi_display()
 {
     if (wifi_enabled())
