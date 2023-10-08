@@ -29,6 +29,7 @@
 
 extern Greenface_ui ui;
 extern String toJSON(String, String);
+extern int user_param_num;
 
 typedef void (*update_fxn)(void);
 

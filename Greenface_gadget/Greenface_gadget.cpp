@@ -225,6 +225,7 @@ void Greenface_gadget::adjust_param(int e, unsigned long delta)
         int the_param = get_param();
         int multiplier = 1;
         uint8_t ndigs = get_num_digits(param_num);
+        digit_num = min(ndigs - 1, digit_num);
         int dig = (ndigs - digit_num) - 1;
         if (decimal_places)
         {
@@ -234,9 +235,10 @@ void Greenface_gadget::adjust_param(int e, unsigned long delta)
             }
         }
         multiplier = pow(10, dig);
+        multiplier = max(1, multiplier);
         the_param += e * multiplier;
         // Serial.println("dig: " + String(dig) + " ndigs: " + String(ndigs) + " multiplier: " + String(multiplier) + " the_param: " + String(the_param) + " dir: " + String(e));
-        // Serial.println("param: " + String(the_param));
+        // Serial.println("dignum: " + String(digit_num));
         the_param = constrain(the_param, 0, 0xFFFF);
         put_param(the_param);
         break;
@@ -722,7 +724,7 @@ String Greenface_gadget::params_toJSON()
         }
         out += toJSON(F("num_digits"), String(num_digits));
         out += ", ";
-        out += toJSON(F("selected"), enable_hilight && param_num == i ? "true" : "false");
+        out += toJSON(F("selected"), user_param_num == 1 && enable_hilight && param_num == i ? "true" : "false");
         out += ", ";
         out += toJSON(F("dp"), decimal_places ? String(decimal_places[i]) : "0");
         out += " }";
@@ -773,7 +775,7 @@ void Greenface_gadget::init()
 {
     // ui.terminal_debug("Initializing: " + name);
     Serial.println("\nInitializing: " + name);
-    param_num = 0;
+    user_param_num = param_num = 0;
     digit_num = 0;
     triggered = false;
     for (int i = 0; i < num_params; i++)
