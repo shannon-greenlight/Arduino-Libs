@@ -220,7 +220,7 @@ public:
 
   void terminal_printRow(String text, String row)
   {
-    if (row != "-1")
+    if (terminal_mirror && row != "-1")
     {
       t.setRow(row);
       t.clrToEOL();
