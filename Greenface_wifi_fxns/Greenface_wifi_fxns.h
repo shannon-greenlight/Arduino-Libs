@@ -3,6 +3,16 @@
 #include <stdlib.h>
 #include <WiFiNINA.h>
 
+enum
+{
+    DISPLAY_NETWORKS,
+    SET_SSID,
+    DISPLAY_PASSWORD,
+    CONNECT,
+    CONNECTED,
+    WIFI_IDLE,
+};
+
 // ui fxns
 EEPROM_String wifi_password(64);
 EEPROM_String wifi_string_vars[] = {wifi_password};
@@ -25,7 +35,7 @@ void wifi_display();
 String get_label(int i);
 String get_control(String control);
 
-uint8_t select_wifi_screen = 5;
+uint8_t select_wifi_screen = WIFI_IDLE;
 int numSsid = 0;
 
 bool wait_not_triggered = false;
@@ -159,7 +169,7 @@ void wifi_connect()
     {
         // ui.fill(BLACK, LINE_1);
         ui.printLine("Failed", LINE_2, 1);
-        select_wifi_screen = 5;
+        select_wifi_screen = WIFI_IDLE;
     }
 }
 
@@ -191,7 +201,7 @@ void wifi_connected()
     ui.printLine("Signal: " + String(WiFi.RSSI()) + " dBm", LINE_3, 1);
 }
 
-void wifi_toJSON()
+String wifi_toJSON()
 {
     String message;
     if (wifi_enabled())
@@ -206,14 +216,17 @@ void wifi_toJSON()
         message += "<br>Status: " + status;
         message += "<br>IP: " + IpAddress2String(WiFi.localIP());
         message += "<br>Signal: " + String(WiFi.RSSI()) + " dBm";
-        ui.t.print(toJSON("message", message));
-        ui.t.print(",");
+        message = (toJSON("message", message));
+        message += (",");
+        // ui.t.print(toJSON("message", message));
+        // ui.t.print(",");
     }
     else
     {
-        ui.t.print(toJSON("message", "<h2>WiFi Disabled</h2>See Settings."));
-        ui.t.print(",");
+        message = (toJSON("message", "<h2>WiFi Disabled</h2>See Settings."));
+        message += (",");
     }
+    return message;
 }
 
 void wifi_display()
@@ -222,22 +235,22 @@ void wifi_display()
     {
         switch (select_wifi_screen)
         {
-        case 0:
+        case DISPLAY_NETWORKS:
             wifi_display_networks();
             break;
-        case 1:
+        case SET_SSID:
             wifi_set_ssid();
             break;
-        case 2:
+        case DISPLAY_PASSWORD:
             wifi_display_password();
             break;
-        case 3:
+        case CONNECT:
             wifi_connect();
             break;
-        case 4:
+        case CONNECTED:
             wifi_connected();
             break;
-        case 5:
+        case WIFI_IDLE:
             wifi_idle();
             break;
         }
@@ -255,15 +268,15 @@ void wifi_display()
 void wifi_activate()
 {
     select_wifi_screen++;
-    if (select_wifi_screen > 5)
-        select_wifi_screen = 0;
+    if (select_wifi_screen > CONNECTED)
+        select_wifi_screen = CONNECTED;
     // ui.terminal_debug("WiFi Activate! screen: " + String(select_wifi_screen));
     wifi_display();
 }
 
 void wifi_new_fxn()
 {
-    select_wifi_screen = (wifi_status == WL_CONNECTED) ? 4 : 5;
+    select_wifi_screen = (wifi_status == WL_CONNECTED) ? CONNECTED : WIFI_IDLE;
 
     wifi_fxn.digit_num = numSsid = 0;
     wifi_fxn.param_num = 0;
