@@ -724,7 +724,7 @@ String Greenface_gadget::params_toJSON()
         }
         out += toJSON(F("num_digits"), String(num_digits));
         out += ", ";
-        out += toJSON(F("selected"), user_param_num == 1 && enable_hilight && param_num == i ? "true" : "false");
+        out += toJSON(F("selected"), user_entering_param == 1 && enable_hilight && param_num == i ? "true" : "false");
         out += ", ";
         out += toJSON(F("dp"), decimal_places ? String(decimal_places[i]) : "0");
         out += " }";
@@ -775,7 +775,8 @@ void Greenface_gadget::init()
 {
     // ui.terminal_debug("Initializing: " + name);
     Serial.println("\nInitializing: " + name);
-    user_param_num = param_num = 0;
+    param_num = 0;
+    user_entering_param = 1;
     digit_num = 0;
     triggered = false;
     for (int i = 0; i < num_params; i++)
