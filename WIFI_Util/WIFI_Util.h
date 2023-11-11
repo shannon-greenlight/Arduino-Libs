@@ -12,6 +12,11 @@ unsigned int wifi_chk_time = 0;
 int wifi_status = WL_IDLE_STATUS;
 WiFiServer server(80);
 
+bool is_wifi_connected()
+{
+    return wifi_status == WL_CONNECTED;
+}
+
 void printWifiStatus()
 {
     // print the SSID of the network you're attached to:

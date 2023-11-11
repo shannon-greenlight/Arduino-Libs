@@ -52,6 +52,7 @@ void wifi_idle()
     WiFi.disconnect();
     wifi_active.reset();
     numSsid = 0;
+    select_wifi_screen = WIFI_IDLE;
 }
 
 void wifi_display_networks()
@@ -106,6 +107,14 @@ void wifi_display_networks()
     }
 }
 
+void wifi_display_password()
+{
+    ui.newFxn(ssid);
+    wifi_fxn.param_num = 0;
+    wifi_fxn.num_params = 1;
+    wifi_fxn.printParams();
+}
+
 void wifi_set_ssid()
 {
     // Serial.println("Set SSID: "+String(wifi_fxn.param_num));
@@ -123,14 +132,6 @@ void wifi_set_ssid()
         select_wifi_screen++;
         wifi_display();
     }
-}
-
-void wifi_display_password()
-{
-    ui.newFxn(ssid);
-    wifi_fxn.param_num = 0;
-    wifi_fxn.num_params = 1;
-    wifi_fxn.printParams();
 }
 
 String IpAddress2String(const IPAddress &ipAddress)
@@ -155,9 +156,11 @@ void wifi_connect()
     do
     {
         if (wifi_status != WL_CONNECTED && millis() > wifi_chk_time)
+        {
             WIFI_setup();
+        }
         ui.printLine("Status: " + getConnectionStatus(server.status()), LINE_1, 1);
-        // Serial.println("Status: " + String(wifi_status));
+        Serial.println("Server Status: " + String(getConnectionStatus(server.status())));
     } while (wifi_status != WL_CONNECTED && count++ < 15);
     if (wifi_status == WL_CONNECTED)
     {
@@ -268,9 +271,14 @@ void wifi_display()
 void wifi_activate()
 {
     select_wifi_screen++;
-    if (select_wifi_screen > CONNECTED)
-        select_wifi_screen = CONNECTED;
     // ui.terminal_debug("WiFi Activate! screen: " + String(select_wifi_screen));
+    if (select_wifi_screen > WIFI_IDLE)
+    {
+        select_wifi_screen = 0;
+    }
+    // if (select_wifi_screen > CONNECTED)
+    //     select_wifi_screen = CONNECTED;
+    // Serial.println("WiFi Activate!! screen: " + String(select_wifi_screen));
     wifi_display();
 }
 

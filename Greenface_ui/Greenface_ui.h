@@ -210,6 +210,14 @@ public:
     }
   }
 
+  void terminal_println(String s)
+  {
+    if (terminal_mirror)
+    {
+      Serial.println(s);
+    }
+  }
+
   void terminal_print(char c)
   {
     if (terminal_mirror)
@@ -507,7 +515,7 @@ public:
     // Serial.println("Prefix: " + prefix);
     // drawHLine(lines[line_num] + offset, BLACK);
     // fill(BLACK, lines[line_num] + offset);
-    int num_blanks = 20 - sval.length();
+    int num_blanks = 21 - sval.length();
     for (int i = 0; i < num_blanks; i++)
     {
       sval += " ";
