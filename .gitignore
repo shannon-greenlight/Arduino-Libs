@@ -61,7 +61,7 @@ _notes
 fp-*
 _autosave*
 
-Debug*
+# Debug*
 Release*
 __vm*
 .vs/*
