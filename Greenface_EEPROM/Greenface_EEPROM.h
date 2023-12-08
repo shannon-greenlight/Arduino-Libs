@@ -8,7 +8,7 @@
 #define Greenface_EEPROM_h
 
 // include types & constants of Wiring core API
-#include "Arduino.h"
+#include <Arduino.h>
 #include <TerminalVT100.h>
 #include <Adafruit_FRAM_I2C.h>
 
